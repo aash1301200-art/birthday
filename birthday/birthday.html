@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>For My Love ❤️</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff85a2;
+            --dark-pink: #d81b60;
+            --soft-pink: #ffdef2;
+            --glass: rgba(255, 255, 255, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            touch-action: manipulation;
+        }
+
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Hero Section */
+        #hero {
+            text-align: center;
+            z-index: 10;
+            transition: all 0.8s ease;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .cake-container {
+            font-size: clamp(60px, 15vw, 100px);
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.2rem, 8vw, 4rem);
+            color: var(--dark-pink);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            color: #880e4f;
+            margin-bottom: 40px;
+            font-weight: 400;
+            padding: 0 10px;
+        }
+
+        .btn-main {
+            background: linear-gradient(to right, var(--primary-pink), var(--dark-pink));
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(216, 27, 96, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .btn-main:active {
+            transform: scale(0.95);
+        }
+
+        /* Main Content */
+        #content {
+            display: none;
+            opacity: 0;
+            width: 95%;
+            max-width: 800px;
+            z-index: 20;
+            text-align: center;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 20px 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            font-size: 0.85rem;
+            color: #ad1457;
+            font-weight: 600;
+        }
+
+        /* Modal / Letter Overlay */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .modal-box {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            max-height: 80vh;
+            padding: 30px 20px;
+            border-radius: 30px;
+            text-align: center;
+            position: relative;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            animation: popUp 0.4s ease-out;
+        }
+
+        @keyframes popUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close {
+            position: sticky;
+            top: 0;
+            float: right;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            margin-top: -10px;
+        }
+
+        .modal-box h2 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--dark-pink);
+            font-size: 2rem;
+            margin: 10px 0 20px;
+        }
+
+        .letter-content {
+            text-align: left;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #444;
+            white-space: pre-line;
+            background: #fffafa;
+            padding: 15px;
+            border-radius: 15px;
+            border-left: 3px solid var(--primary-pink);
+        }
+
+        .teddy-svg {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 10px;
+        }
+
+        /* Utilities */
+        .show { display: block !important; opacity: 1 !important; }
+        .hide { display: none !important; }
+
+        @media (min-width: 600px) {
+            .grid { grid-template-columns: repeat(2, 1fr); gap: 25px; }
+            .card { padding: 40px 20px; }
+            .card-icon { font-size: 60px; }
+            .card h3 { font-size: 1rem; }
+            .modal-box { padding: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Page 1: Hero -->
+    <div id="hero">
+        <div class="cake-container">🎂</div>
+        <h1>Happy Birthday My Love!</h1>
+        <p class="subtitle">A special world created just for you. ❤️</p>
+        <button class="btn-main" onclick="revealSite()">Click to Begin ✨</button>
+    </div>
+
+    <!-- Page 2: Content -->
+    <div id="content">
+        <h2 style="font-family: 'Dancing Script', cursive; font-size: 2.2rem; color: #ad1457;">Gifts for My Love 💝</h2>
+        <div class="grid">
+            <div class="card" onclick="openSurprise('love')">
+                <span class="card-icon">🧸</span>
+                <h3>Endless Love</h3>
+            </div>
+            <div class="card" onclick="openSurprise('smile')">
+                <span class="card-icon">🌟</span>
+                <h3>Your Smile</h3>
+            </div>
+            <div class="card" onclick="openSurprise('kisses')">
+                <span class="card-icon">💋</span>
+                <h3>Forever Kisses</h3>
+            </div>
+            <div class="card" onclick="openSurprise('adventure')">
+                <span class="card-icon">📖</span>
+                <h3>Our Adventure</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Box -->
+    <div id="modal">
+        <div class="modal-box">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modal-data"></div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Background Animation (Optimized for Mobile)
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.onresize = resize;
+        resize();
+
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + 20;
+                this.size = Math.random() * 12 + 8;
+                this.speed = Math.random() * 0.8 + 0.4;
+                this.opacity = Math.random() * 0.4 + 0.2;
+                this.type = Math.random() > 0.5 ? '❤️' : '✨';
+            }
+            draw() {
+                ctx.globalAlpha = this.opacity;
+                ctx.font = `${this.size}px serif`;
+                ctx.fillText(this.type, this.x, this.y);
+            }
+            update() {
+                this.y -= this.speed;
+                if (this.y < -30) this.reset();
+            }
+        }
+
+        for(let i=0; i<25; i++) particles.push(new Particle());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // 2. Navigation
+        function revealSite() {
+            const hero = document.getElementById('hero');
+            const content = document.getElementById('content');
+            hero.style.opacity = '0';
+            setTimeout(() => {
+                hero.classList.add('hide');
+                content.classList.add('show');
+                content.style.opacity = '1';
+                content.style.transform = 'scale(1)';
+            }, 500);
+        }
+
+        // 3. Teddy SVG Template
+        const teddySVG = `
+            <svg class="teddy-svg" viewBox="0 0 200 200">
+                <circle cx="60" cy="60" r="25" fill="#A67C52" /><circle cx="140" cy="60" r="25" fill="#A67C52" />
+                <circle cx="100" cy="100" r="55" fill="#8B5A2B" />
+                <circle cx="80" cy="90" r="6" fill="#000"><animate attributeName="ry" values="6;1;6" dur="3s" repeatCount="indefinite"/></circle>
+                <circle cx="120" cy="90" r="6" fill="#000"><animate attributeName="ry" values="6;1;6" dur="3s" repeatCount="indefinite"/></circle>
+                <ellipse cx="100" cy="115" rx="20" ry="15" fill="#D2B48C" /><circle cx="100" cy="110" r="6" fill="#3E2723" />
+                <path d="M100 150 C80 130 60 145 60 165 C60 185 100 210 100 210 C100 210 140 185 140 165 C140 145 120 130 100 150" fill="#ff4d6d">
+                    <animate attributeName="transform" attributeType="XML" type="scale" values="1;1.1;1" dur="1s" repeatCount="indefinite" />
+                </path>
+            </svg>`;
+
+        // 4. Content Data
+        const items = {
+            'love': {
+                title: "Endless Love",
+                text: "You are the most amazing person I've ever met. This teddy is holding my heart for you forever!",
+                visual: teddySVG
+            },
+            'smile': {
+                title: "Your Smile",
+                text: "Your smile is my absolute favorite thing. I'd do anything to keep it shining!",
+                img: "https://media.tenor.com/OnG9a_A_o_EAAAAM/milk-mocha.gif"
+            },
+            'kisses': {
+                title: "Forever Kisses",
+                text: "Sending you 19 huge kisses for your 19th birthday! Mwah!",
+                img: "https://media.tenor.com/gU_0p96N_F4AAAAM/milk-and-mocha-bear-kiss.gif"
+            },
+            'adventure': {
+                title: "Happy Birthday My Love 🤍",
+                isLetter: true,
+                text: `HAPPY BIRTHDAY BABYYY today is my girl’s birthday you turned 19 now you’re all grown up and honestly i feel so lucky to have you in my life
+
+i still remember the day we first met in the game i was rage baiting everyone and was about to do the same with you but you were so nice to me and that’s where everything started then we started sharing our days every single day what we did everything and slowly i got attached to you
+
+when i asked for your insta id you struggled so much to give it roblox kept tagging it 😭😭 but we still found our way and when we finally talked on insta everything just felt right i even used some dumb tricks to see if you had feelings for me too and when i found out you did that was one of the best feelings ever
+
+there was a time when everything was about to end and yeah i know it was my fault i was the one who said it but now when i think about it if we actually ended that day i would’ve lost the most amazing girl a pretty smart strong and talented girl who was already dealing with so much i’m really sorry for that day babyy
+
+and honestly YOU CHANGED ME in ways you don’t even realize YOU MADE ME SOFTER YOU MADE ME CARE MORE YOU MADE ME FEEL THINGS I NEVER FELT BEFORE
+
+i just wanna say I LOVE YOU SO MUCH LIKE SO SO MUCH i can’t even explain it in words YOU MEAN A LOT TO ME and the way we fall asleep on video call together THAT COMFORT IS DIFFERENT i hope we meet soon and create real memories together and not just online ones
+
+babyy please try not to cry i really don’t like it when you cry i know things get hard sometimes but always remember I’M ALWAYS HERE FOR YOU no matter what happens in your life I’LL NEVER LEAVE YOU whether anyone else stays or not
+
+and please don’t overthink too much arguments happen in every relationship but what matters is we fix it and I PROMISE I’LL ALWAYS TRY FOR US let’s always put our ego aside because I NEVER WANNA LOSE YOU
+
+YOU ARE SO PRETTY SO STRONG SO HARDWORKING and you deserve every bit of happiness in this world
+
+once again HAPPY BIRTHDAY MY LOVE 💗 I’M ALWAYS YOURS 🤍`,
+                img: "https://media.tenor.com/fG7YqfAnu_4AAAAM/milk-and-mocha-bear-love.gif"
+            }
+        };
+
+        function openSurprise(key) {
+            const data = items[key];
+            const area = document.getElementById('modal-data');
+            const modal = document.getElementById('modal');
+
+            if (data.isLetter) {
+                area.innerHTML = `
+                    <img src="${data.img}" style="width:100px; margin-bottom:10px;">
+                    <h2>${data.title}</h2>
+                    <div class="letter-content">${data.text}</div>
+                `;
+            } else {
+                let visual = data.visual || `<img src="${data.img}" style="width:180px; border-radius:20px; margin-bottom:15px;">`;
+                area.innerHTML = `
+                    ${visual}
+                    <h2>${data.title}</h2>
+                    <p style="color:#555; line-height:1.6;">${data.text}</p>
+                `;
+            }
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+        window.onclick = (e) => { if(e.target == document.getElementById('modal')) closeModal(); }
+    </script>
+</body>
+</html>
